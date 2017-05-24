@@ -105,6 +105,7 @@ export const fetchUserData = (callback) => {
   return (dispatch) => {
     let s3 = new AWS.S3();
     s3.getObject({
+      ResponseCacheControl: 'no-cache',
       Bucket: config.bucket,
       Key: getUserId() + '.json',
     }, (err, data) => {
