@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import { browserHistory } from 'react-router';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class Header extends Component {
   render() {
@@ -15,11 +17,33 @@ class Header extends Component {
             this.props.isLoggedIn ?
             <div className='user-info'>
               {this.props.userId}
-              <span onClick={() => this.props.onLogout()}>{' (logout)'}</span>
+              <span onClick={() => {
+                this.isConfirmationOpen = true;
+                this.forceUpdate();
+              }}>{' (logout)'}</span>
             </div> :
             <span></span>
           }
         />
+        <Dialog
+          title={'Are you sure you want to logout?'}
+          actions={[
+            <FlatButton
+              label='No'
+              primary={true}
+              keyboardFocused={true}
+              onClick={() => {
+                this.isConfirmationOpen = false;
+                this.forceUpdate();
+              }}/>,
+            <FlatButton
+              label='Yes'
+              primary={true}
+              onClick={() => this.props.onLogout()}/>
+          ]}
+          modal={false}
+          open={!!this.isConfirmationOpen}>
+        </Dialog>
       </div>
     );
   }
